@@ -98,13 +98,17 @@ body::before {
 }
 
 #visualizer {
-    font-size: 10rem;
+    font-size: 10vw;
     font-family: "Comic Sans MS", "CSM", Arial, Helvetica, sans-serif;
     font-weight: bold;
     text-align: center;
     -webkit-text-stroke: 3px white;
     position: relative;
     z-index: 2;
+    max-width: 90vw;
+    padding: 0 5vw;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 #visualizer span {
@@ -114,3 +118,5 @@ body::before {
 audio {
     display: none;
 }
+
+

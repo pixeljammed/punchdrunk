@@ -1,0 +1,1 @@
+all the images are in `static/images` btw. go ham. make a pull request for more. Whatever. Fuck.

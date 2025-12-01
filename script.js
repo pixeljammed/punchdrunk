@@ -23,16 +23,35 @@ fetch('static/images.json')
         }
     });
 
-// Split text into individual characters with rainbow colors
+// Split text into words, then split each word into characters with rainbow colors
 const text = visualizer.textContent;
 visualizer.textContent = '';
-const chars = text.split('').map((char, i) => {
-    const span = document.createElement('span');
-    span.textContent = char === ' ' ? '\u00A0' : char; // Preserve spaces
-    const hue = (i / text.length) * 360;
-    span.style.color = `hsl(${hue}, 100%, 85%)`;
-    visualizer.appendChild(span);
-    return span;
+const words = text.split(' ');
+const chars = [];
+let charIndex = 0;
+words.forEach((word, wordIdx) => {
+    const wordSpan = document.createElement('span');
+    wordSpan.style.display = 'inline-block';
+    wordSpan.style.whiteSpace = 'nowrap';
+
+    word.split('').forEach((char) => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        const hue = (charIndex / text.length) * 360;
+        span.style.color = `hsl(${hue}, 100%, 85%)`;
+        wordSpan.appendChild(span);
+        chars.push(span);
+        charIndex++;
+    });
+
+    visualizer.appendChild(wordSpan);
+
+    // Add space after word (except for the last word)
+    if (wordIdx < words.length - 1) {
+        const space = document.createTextNode(' ');
+        visualizer.appendChild(space);
+        charIndex++; // Count the space
+    }
 });
 
 // Create audio context and analyzer
@@ -100,9 +119,19 @@ function animate() {
 
 // Button to start visualizer
 const startBtn = document.getElementById('startBtn');
+const title = document.getElementById('title');
+const originalTitle = title.textContent;
+
 startBtn.addEventListener('click', () => {
     startBtn.style.display = 'none';
     visualizer.style.display = 'block';
+
+    // Flash arrows around title
+    let showArrows = true;
+    setInterval(() => {
+        title.textContent = showArrows ? `>>> ${originalTitle} <<<` : originalTitle;
+        showArrows = !showArrows;
+    }, 100);
 
     if (audioContext.state === 'suspended') {
         audioContext.resume();
