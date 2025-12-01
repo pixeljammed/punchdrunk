@@ -6,8 +6,15 @@ const imageGrid = document.getElementById('image-grid');
 fetch('static/images.json')
     .then(response => response.json())
     .then(images => {
+        // Calculate how many images we need to fill the grid
+        // Each row is (200vw / 8) / (16 / 9) height
+        // We need at least 200vh of height
+        const rowHeight = (window.innerWidth * 2 / 8) / (16 / 9);
+        const rowsNeeded = Math.ceil((window.innerHeight * 2) / rowHeight);
+        const totalImages = Math.max(64, rowsNeeded * 8);
+
         // Populate grid with images (random order)
-        for (let i = 0; i < 64; i++) {
+        for (let i = 0; i < totalImages; i++) {
             const img = document.createElement('img');
             const randomIndex = Math.floor(Math.random() * images.length);
             img.src = images[randomIndex];
